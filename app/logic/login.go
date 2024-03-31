@@ -25,18 +25,17 @@ func PostLoginHandler(c *gin.Context) {
 		return
 	}
 
-	// #7. 连接数据库, 查询用户
-	// https://gorm.io/docs/query.html
-	tx := model.Conn.Table("users").Where("name = ? AND password = ?", user.Name, user.Password).First(user)
-	if tx.Error != nil {
+	// # 查询用户
+	ret, err := model.GetUser(user)
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"msg":   "user not found",
-			"error": fmt.Sprintf("%v", tx.Error),
+			"error": fmt.Sprintf("%v", err),
 		})
 
 		return
 	}
 
 	// 成功后显示用户信息
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, ret)
 }
