@@ -1,10 +1,16 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type User struct {
-	Name     string `form:"name" binding:"required" json:"name"`
-	Password string `form:"password" binding:"required" json:"password"`
+	Id          int64     `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL" form:"id" json:"id"`
+	Name        string    `gorm:"column:name;default:NULL" form:"name" json:"name"`
+	Password    string    `gorm:"column:password;default:NULL" form:"password" json:"password"`
+	CreatedTime time.Time `gorm:"column:created_time;default:NULL" form:"createdTime" json:"createdTime"`
+	UpdatedTime time.Time `gorm:"column:updated_time;default:NULL" form:"updatedTime" json:"updatedTime"`
 }
 
 // GetUser 查询用户数据

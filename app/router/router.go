@@ -16,6 +16,18 @@ func New() {
 	// 但是在引用的模板文件中，需要使用相对于 main.go 的相对路径
 	r.LoadHTMLGlob("app/view/*")
 
+	// 首页
+	r.GET("/", logic.Index)
+
+	{
+		index := r.Group("")
+		// 使用中间件， 检查cookie
+		index.Use(logic.IndexLoginCheckerMiddleware)
+
+		// 登录后首页
+		index.GET("/index", logic.IndexLogin)
+	}
+
 	// Login GET
 	r.GET("/login", logic.GetLoginHandler)
 	// 获取表单数据

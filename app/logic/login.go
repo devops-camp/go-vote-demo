@@ -36,6 +36,14 @@ func PostLoginHandler(c *gin.Context) {
 		return
 	}
 
+	// domain 设置为空， 任意域名都可以生效
+	// domain 设置不为空， 则仅对特定域名生效
+	c.SetCookie("name", ret.Name, 3600, "/", "", true, false)
+
 	// 成功后显示用户信息
-	c.JSON(http.StatusOK, ret)
+	// 303: redirect with GET method
+	// 307: redirect with Current method (post -> post)
+	c.Redirect(http.StatusSeeOther, "/index")
+	// c.JSON(http.StatusOK, ret)
+
 }
