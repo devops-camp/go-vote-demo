@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -49,6 +52,18 @@ func postLoginHandler(c *gin.Context) {
 		return
 	}
 
+	// #7. 连接数据库, 查询用户
+	// https://gorm.io/docs/query.html
+	tx := GlobalConn.Table("users").Where("name = ? AND password = ?", user.Name, user.Password).First(user)
+	if tx.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"msg":   "user not found",
+			"error": fmt.Sprintf("%v", tx.Error),
+		})
+
+		return
+	}
+
 	// 成功后显示用户信息
 	c.JSON(http.StatusOK, user)
 }
@@ -56,4 +71,35 @@ func postLoginHandler(c *gin.Context) {
 type User struct {
 	Name     string `form:"name" binding:"required" json:"name"`
 	Password string `form:"password" binding:"required" json:"password"`
+}
+
+// DBConn 连接数据库
+// #7. 连接数据库
+// https://gorm.io/docs/connecting_to_the_database.html
+func DBConn() *gorm.DB {
+	dsnfmt := "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+
+	dsn := fmt.Sprintf(dsnfmt,
+		"root", "Mysql12345",
+		"127.0.0.1", 3306,
+		"vote")
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		panic(err)
+	}
+
+	return db
+
+}
+
+// 定义全局 DB 连接
+var GlobalConn *gorm.DB
+
+// 初始化函数， 在 main 函数之前执行
+func init() {
+	if GlobalConn == nil {
+		GlobalConn = DBConn()
+	}
 }
