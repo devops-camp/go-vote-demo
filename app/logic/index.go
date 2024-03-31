@@ -1,6 +1,10 @@
 package logic
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func Index(c *gin.Context) {
 	c.HTML(200, "index.html", nil)
@@ -16,13 +20,15 @@ func IndexLogin(c *gin.Context) {
 
 }
 
+// IndexLoginCheckerMiddleware 检查 cookie 则跳转到登录也
 func IndexLoginCheckerMiddleware(c *gin.Context) {
 
 	name, err := c.Cookie("name")
 	if err != nil || name == "" {
 		// 跳转到登录页面
-		c.Redirect(302, "/login")
-		c.Abort()
+		c.Redirect(http.StatusSeeOther, "/login")
+		// c.Abort()
+		return
 	}
 
 	c.Next()

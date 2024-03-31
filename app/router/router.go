@@ -23,6 +23,8 @@ func New() {
 		index := r.Group("")
 		// 使用中间件， 检查cookie
 		index.Use(logic.IndexLoginCheckerMiddleware)
+
+		// 登录后首页
 		index.GET("/index", logic.IndexLogin)
 	}
 
