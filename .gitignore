@@ -21,3 +21,5 @@
 go.work
 
 mysql-data
+
+.DS_Store

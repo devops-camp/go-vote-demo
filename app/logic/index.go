@@ -20,7 +20,7 @@ func IndexLogin(c *gin.Context) {
 
 }
 
-// IndexLoginCheckerMiddleware 检查 cookie 则跳转到登录也
+// IndexLoginCheckerMiddleware 检查 cookie 则跳转到登录页面
 func IndexLoginCheckerMiddleware(c *gin.Context) {
 
 	name, err := c.Cookie("name")
