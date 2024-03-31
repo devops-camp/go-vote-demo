@@ -3,6 +3,12 @@
 GET http://localhost:8080/ping
 
 
+
+## Login
+
+### GET login
+GET http://127.0.0.1:8080/login
+
 ### POST login
 POST http://127.0.0.1:8080/login
 Content-Type: application/x-www-form-urlencoded

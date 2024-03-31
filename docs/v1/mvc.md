@@ -2,7 +2,7 @@
 title: 5. 拆分为 MVC 目录结构
 ---
 
-## 1. 拆分 MVC 目录
+## 1. MVC 目录
 
 ```bash
 $ tree app
@@ -14,5 +14,26 @@ app
   └── tools # 公共组件
 
 5 directories, 0 files
+```
+
+## 2. 拆分代码到 MVC 目录
+
+```bash
+$ tree app
+app
+  ├── app.go
+  ├── logic
+  │   ├── login.go
+  │   └── ping.go
+  ├── model
+  │   ├── db.go
+  │   └── user.go
+  ├── router
+  │   └── router.go
+  ├── tools
+  └── view
+    └── login.tmpl
+
+5 directories, 7 files
 ```
 
