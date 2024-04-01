@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/devops-camp/go-vote-demo/app/model"
+	"github.com/devops-camp/go-vote-demo/app/tools"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,9 +29,10 @@ func PostLoginHandler(c *gin.Context) {
 	// # 查询用户
 	ret, err := model.GetUser(user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"msg":   "user not found",
-			"error": fmt.Sprintf("%v", err),
+
+		c.JSON(http.StatusBadRequest, tools.Ecode{
+			Code:    http.StatusBadRequest,
+			Message: fmt.Sprintf("%v", err),
 		})
 
 		return
