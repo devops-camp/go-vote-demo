@@ -10,7 +10,7 @@ title: 6. 使用 cookie 管理登录状态
 建表 SQL
 
 ```sql
-CREATE TABLE `users` (
+CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `password` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
