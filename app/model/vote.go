@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Vote struct {
 	Id          int64     `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
@@ -26,6 +29,21 @@ func GetVotes() ([]Vote, error) {
 	}
 
 	return votes, nil
+}
+
+// GetVote 根据 ID 查询数据
+func GetVote(id int64) (Vote, error) {
+	vote := Vote{}
+	tx := Conn.Table("vote").Where("id = ?", id).First(&vote)
+	if tx.Error != nil {
+		return Vote{}, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return Vote{}, fmt.Errorf("Record not found")
+	}
+
+	return vote, nil
 }
 
 type VoteOpt struct {

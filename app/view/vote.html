@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>投票详情</title>
+</head>
+<body>
+
+<!-- vote 信息-->
+<div class="vote">
+    <h2>{{ .Title }}</h2>
+    <span>状态: {{ .Status }}</span>
+    <span>创建用户: {{ .UserId }}</span>
+    <span>过期时间: {{ .ExpiredIn }}</span>
+    <span>创建时间: {{ .CreatedTime }}</span>
+</div>
+
+<!-- vote 选项信息-->
+<div class="vote-opt">
+    <ul>
+        <li>Item</li>
+        <li>Item</li>
+        <li>Item</li>
+        <li>Item</li>
+    </ul>
+</div>
+
+</body>
+</html>

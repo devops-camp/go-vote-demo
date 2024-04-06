@@ -22,6 +22,8 @@ func IndexLogin(c *gin.Context) {
 			Code:    http.StatusBadRequest,
 			Message: err.Error(),
 		})
+
+		return
 	}
 
 	data := map[string]any{
