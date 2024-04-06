@@ -17,6 +17,17 @@ func (v *Vote) TableName() string {
 	return "vote"
 }
 
+// GetVotes 获取投票列表
+func GetVotes() ([]Vote, error) {
+	votes := make([]Vote, 0)
+	tx := Conn.Table("vote").Find(&votes)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return votes, nil
+}
+
 type VoteOpt struct {
 	Id          int64     `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
 	Name        string    `gorm:"column:name;default:NULL;comment:'选项名称'"`
