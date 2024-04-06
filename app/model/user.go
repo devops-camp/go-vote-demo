@@ -31,3 +31,7 @@ func GetUser(user *User) (*User, error) {
 
 	return u2, nil
 }
+
+func (u *User) TableName() string {
+	return "user"
+}
