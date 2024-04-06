@@ -11,20 +11,19 @@
 
 <!-- vote 信息-->
 <div class="vote">
-    <h2>{{ .Title }}</h2>
-    <span>状态: {{ .Status }}</span>
-    <span>创建用户: {{ .UserId }}</span>
-    <span>过期时间: {{ .ExpiredIn }}</span>
-    <span>创建时间: {{ .CreatedTime }}</span>
+    <h2>{{ .Vote.Title }}</h2>
+    <span>状态: {{ .Vote.Status }}</span>
+    <span>创建用户: {{ .Vote.UserId }}</span>
+    <span>过期时间: {{ .Vote.ExpiredIn }}</span>
+    <span>创建时间: {{ .Vote.CreatedTime }}</span>
 </div>
 
 <!-- vote 选项信息-->
 <div class="vote-opt">
     <ul>
-        <li>Item</li>
-        <li>Item</li>
-        <li>Item</li>
-        <li>Item</li>
+        {{ range $key, $value := .Opts }}
+        <li>{{ $value.Id}} - {{ $value.Name }} - {{ $value.Count }}</li>
+        {{ end }}
     </ul>
 </div>
 

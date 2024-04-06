@@ -59,6 +59,17 @@ func (v *VoteOpt) TableName() string {
 	return "vote_opt"
 }
 
+// GetVoteOptsByVoteId 根据投票 ID 查询选项
+func GetVoteOptsByVoteId(voteId int64) ([]VoteOpt, error) {
+	voteOpts := make([]VoteOpt, 0)
+	tx := Conn.Table("vote_opt").Where("vote_id = ?", voteId).Find(&voteOpts)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return voteOpts, nil
+}
+
 type VoteOptUser struct {
 	Id          int64     `gorm:"column:id;primary_key;NOT NULL"`
 	VoteId      int64     `gorm:"column:vote_id;default:NULL;comment:'表单ID'"`

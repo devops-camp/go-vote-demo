@@ -129,3 +129,69 @@ func GetVoteHandler(c *gin.Context) {
 
 ![](./get-votes-link.png)
 
+
+## 4. 展示 VoteOpts 选项
+
+1. 在 `model/vote.go` 中添加获取选项信息的方法
+
+```go
+// GetVoteOptsByVoteId 根据投票 ID 查询选项
+func GetVoteOptsByVoteId(voteId int64) ([]VoteOpt, error) {
+	voteOpts := make([]VoteOpt, 0)
+	tx := Conn.Table("vote_opt").Where("vote_id = ?", voteId).Find(&voteOpts)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return voteOpts, nil
+}
+```
+
+2. 在 `logic/vote.go` 中获取选项信息并渲染到页面。
+
+> 注意: 由于同时返回了 Vote 和 VoteOpts 信息。 因此使用 `map[string]any` 作为数据容器。 对应的模版也需要进行更改。，
+
+```go
+func GetVoteHandler(c *gin.Context) {
+
+	vote, err := model.GetVote(id)
+	opts, err := model.GetVoteOptsByVoteId(id)
+
+	// 使用 data 组合 vote 和 vote_opt 数据
+	data := map[string]any{
+		"Vote": vote,
+		"Opts": opts,
+	}
+
+	c.HTML(http.StatusOK, "vote.html", data)
+}
+```
+
+
+
+2. 在 `view/vote.html` 中， 添加选项信息展示
+
+```html
+<!-- vote 信息-->
+<!-- 修改数据结构字段， 增加 .Vote -->
+<div class="vote">
+    <h2>{{ .Vote.Title }}</h2>
+    <span>状态: {{ .Vote.Status }}</span>
+    <span>创建用户: {{ .Vote.UserId }}</span>
+    <span>过期时间: {{ .Vote.ExpiredIn }}</span>
+    <span>创建时间: {{ .Vote.CreatedTime }}</span>
+</div>
+
+<!-- 新增 VoteOpt 信息-->
+<!-- vote_opt 信息-->
+<div class="vote-opt">
+    <ul>
+        {{ range $key, $value := .Opts }}
+        <li>{{ $value.Id}} - {{ $value.Name }} - {{ $value.Count }}</li>
+        {{ end }}
+    </ul>
+</div>
+```
+
+![](./vote-detail-with-opt.png)
+

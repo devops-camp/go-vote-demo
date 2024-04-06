@@ -28,6 +28,16 @@ func GetVoteHandler(c *gin.Context) {
 		return
 	}
 
+	opts, err := model.GetVoteOptsByVoteId(id)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, tools.EcodeBadRequest(err.Error()))
+		return
+	}
+
+	data := map[string]any{
+		"Vote": vote,
+		"Opts": opts,
+	}
 	//c.JSON(http.StatusOK, vote)
-	c.HTML(http.StatusOK, "vote.html", vote)
+	c.HTML(http.StatusOK, "vote.html", data)
 }
