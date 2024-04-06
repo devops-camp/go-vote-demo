@@ -106,5 +106,26 @@ func GetVoteHandler(c *gin.Context) {
 }
 ```
 
-![](vote-detail.png)
+![](./vote-detail.png)
+
+## 3. 关联 Index 和 Vote 页面
+
+在 `view/index-login.tmpl` 中添加跳转链接
+
+1. 使用 a 标签跳转到 vote 页面
+2. 使用 `{{ $value.Id}}` 传递参数
+
+```html
+<h3>投票列表</h3>
+{{ range $key, $value := .Votes }}
+<ul>
+    <li>
+        <!-- 使用 a 标签传递跳转页面。  -->
+        <a href="/vote?id={{ $value.Id}} ">{{ $key}} - {{ $value.Title }}</a>
+    </li>
+</ul>
+{{ end }}
+```
+
+![](./get-votes-link.png)
 

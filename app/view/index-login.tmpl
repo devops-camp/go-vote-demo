@@ -12,7 +12,9 @@
 <h3>投票列表</h3>
 {{ range $key, $value := .Votes }}
 <ul>
-    <li>{{ $key}} - {{ $value.Title }}</li>
+    <li>
+        <a href="/vote?id={{$value.Id}}">{{ $key}} - {{ $value.Title }}</a>
+    </li>
 </ul>
 {{ end }}
 
