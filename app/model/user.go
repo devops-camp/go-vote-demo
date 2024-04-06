@@ -21,7 +21,7 @@ func GetUser(user *User) (*User, error) {
 
 	// no primary key defined, results will be ordered by first field (i.e., `users.name`)
 	// SELECT * FROM `users` WHERE name = 'admin' AND password = 'admin123' ORDER BY `users`.`name` LIMIT 1
-	tx := Conn.Table("users").Where("name = ? AND password = ?", user.Name, user.Password).First(u2)
+	tx := Conn.Table("user").Where("name = ? AND password = ?", user.Name, user.Password).First(u2)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -30,4 +30,8 @@ func GetUser(user *User) (*User, error) {
 	}
 
 	return u2, nil
+}
+
+func (u *User) TableName() string {
+	return "user"
 }

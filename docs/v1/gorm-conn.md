@@ -38,10 +38,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for users
+-- Table structure for user
 -- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users` (
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `password` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -51,11 +51,11 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- ----------------------------
--- Records of users
+-- Records of user
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` (`id`, `name`, `password`, `created_time`, `updated_time`) VALUES (1, 'admin', 'admin', '2024-03-31 16:42:40', '2024-03-31 16:42:42');
-INSERT INTO `users` (`id`, `name`, `password`, `created_time`, `updated_time`) VALUES (2, 'admin1', 'admin1', '2024-03-31 16:45:46', '2024-03-31 16:45:48');
+INSERT INTO `user` (`id`, `name`, `password`, `created_time`, `updated_time`) VALUES (1, 'admin', 'admin', '2024-03-31 16:42:40', '2024-03-31 16:42:42');
+INSERT INTO `user` (`id`, `name`, `password`, `created_time`, `updated_time`) VALUES (2, 'admin1', 'admin1', '2024-03-31 16:45:46', '2024-03-31 16:45:48');
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -119,7 +119,7 @@ func postLoginHandler(c *gin.Context) {
 
 	// #7. 连接数据库, 查询用户
 	// https://gorm.io/docs/query.html
-	tx := GlobalConn.Table("users").Where("name = ? AND password = ?", user.Name, user.Password).First(user)
+	tx := GlobalConn.Table("user").Where("name = ? AND password = ?", user.Name, user.Password).First(user)
 	if tx.Error != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"msg":   "user not found",
