@@ -11,7 +11,7 @@
 
 <!-- vote 信息-->
 <div class="vote">
-    <h2>{{ .Vote.Title }}</h2>
+    <h2>{{ .Vote.Id }} - {{ .Vote.Title }}</h2>
     <span>状态: {{ .Vote.Status }}</span>
     <span>创建用户: {{ .Vote.UserId }}</span>
     <span>过期时间: {{ .Vote.ExpiredIn }}</span>
@@ -20,11 +20,19 @@
 
 <!-- vote 选项信息-->
 <div class="vote-opt">
-    <ul>
+    <form action="/vote" method="post">
+        <!-- 1. 向服务端提交 vote_id, 2. 但不在页面上显示-->
+        <input hidden="hidden" name="vote_id"  type="text" value="{{ .Vote.Id }}" />
         {{ range $key, $value := .Opts }}
-        <li>{{ $value.Id}} - {{ $value.Name }} - {{ $value.Count }}</li>
+
+        <div>
+            <!-- name 统一使用 opts, 服务端使用 数组接收   -->
+            <input type="checkbox" name="opts" id="opt{{$value.Id}}" value="{{$value.Id}}" />
+            <label for="opt{{$value.Id}}">{{$value.Name}} --- {{ $value.Count }}次</label>
+        </div>
         {{ end }}
-    </ul>
+        <input type="submit" value="Submit" />
+    </form>
 </div>
 
 </body>

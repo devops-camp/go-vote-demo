@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -68,6 +69,18 @@ func GetVoteOptsByVoteId(voteId int64) ([]VoteOpt, error) {
 	}
 
 	return voteOpts, nil
+}
+
+// UpdateVoteCount 更新 VoteOpt 表计数器
+func UpdateVoteCount(id int64, voteId int64) error {
+	tx := Conn.Table("vote_opt").
+		Where("id = ? AND vote_id = ?", id, voteId).
+		Update("count", gorm.Expr("count + ?", 1))
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
 }
 
 type VoteOptUser struct {

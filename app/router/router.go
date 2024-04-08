@@ -27,6 +27,7 @@ func New() {
 		// 登录后首页
 		authorized.GET("/index", logic.IndexLogin)
 		authorized.GET("/vote", logic.GetVoteHandler)
+		authorized.POST("/vote", logic.PostVoteHandler)
 	}
 
 	// Login GET
