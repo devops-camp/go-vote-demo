@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>熊猫投票</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>熊猫投票</title>
 </head>
+
 <body>
 
-<h1>Vote 投票网站</h1>
-<h2>欢迎登录: {{ .Name }} </h2>
-<h3>投票列表</h3>
-{{ range $key, $value := .Votes }}
-<ul>
+  <h1>Vote 投票网站</h1>
+  <h2>欢迎登录: {{ .Name }} <a href="/logout">退出</a></h2>
+  <h3>投票列表</h3>
+  {{ range $key, $value := .Votes }}
+  <ul>
     <li>
-        <a href="/vote?id={{$value.Id}}">{{ $key}} - {{ $value.Title }}</a>
+      <a href="/vote?id={{$value.Id}}">{{ $key}} - {{ $value.Title }}</a>
     </li>
-</ul>
-{{ end }}
+  </ul>
+  {{ end }}
 
 </body>
+
 </html>

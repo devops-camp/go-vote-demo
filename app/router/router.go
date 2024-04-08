@@ -22,7 +22,8 @@ func New() {
 	{
 		authorized := r.Group("")
 		// 使用中间件， 检查cookie
-		authorized.Use(logic.IndexLoginCheckerMiddleware)
+		// authorized.Use(logic.IndexLoginCheckerMiddleware)
+		authorized.Use(logic.IndexLoginCheckSessionMiddleware)
 
 		// 登录后首页
 		authorized.GET("/index", logic.IndexLogin)
@@ -34,6 +35,7 @@ func New() {
 	r.GET("/login", logic.GetLoginHandler)
 	// 获取表单数据
 	r.POST("/login", logic.PostLoginHandler)
+	r.GET("/logout", logic.LogoutHandler)
 
 	if err := r.Run(":8080"); err != nil {
 		panic(err)

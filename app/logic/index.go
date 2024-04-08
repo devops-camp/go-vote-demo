@@ -1,9 +1,11 @@
 package logic
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/devops-camp/go-vote-demo/app/model"
 	"github.com/devops-camp/go-vote-demo/app/tools"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,4 +47,27 @@ func IndexLoginCheckerMiddleware(c *gin.Context) {
 	}
 
 	c.Next()
+}
+
+func IndexLoginCheckSessionMiddleware(c *gin.Context) {
+	var name string
+	var id int64
+
+	values := GetSession(c)
+	if v, ok := values["name"]; ok {
+		name = v.(string)
+	}
+	if v, ok := values["id"]; ok {
+		id = v.(int64)
+	}
+
+	if name == "" || id <= 0 {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, tools.Ecode{
+			Code:    http.StatusUnauthorized,
+			Message: "Session Failed: Unauthorized",
+		})
+		return
+	}
+
+	fmt.Println("name: ", name, "id", id)
 }

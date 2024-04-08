@@ -40,7 +40,15 @@ func PostLoginHandler(c *gin.Context) {
 
 	// domain 设置为空， 任意域名都可以生效
 	// domain 设置不为空， 则仅对特定域名生效
-	c.SetCookie("name", ret.Name, 3600, "/", "", true, false)
+	// c.SetCookie("name", ret.Name, 3600, "/", "", true, false)
+	err = SetSession(c, ret.Name, ret.Id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, tools.Ecode{
+			Code:    http.StatusInternalServerError,
+			Message: fmt.Sprintf("%v", err),
+		})
+		return
+	}
 
 	// 成功后显示用户信息
 	// 303: redirect with GET method
