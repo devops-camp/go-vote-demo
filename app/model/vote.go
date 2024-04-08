@@ -1,6 +1,10 @@
 package model
 
-import "time"
+import (
+	"fmt"
+	"gorm.io/gorm"
+	"time"
+)
 
 type Vote struct {
 	Id          int64     `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
@@ -28,6 +32,21 @@ func GetVotes() ([]Vote, error) {
 	return votes, nil
 }
 
+// GetVote 根据 ID 查询数据
+func GetVote(id int64) (Vote, error) {
+	vote := Vote{}
+	tx := Conn.Table("vote").Where("id = ?", id).First(&vote)
+	if tx.Error != nil {
+		return Vote{}, tx.Error
+	}
+
+	if tx.RowsAffected == 0 {
+		return Vote{}, fmt.Errorf("Record not found")
+	}
+
+	return vote, nil
+}
+
 type VoteOpt struct {
 	Id          int64     `gorm:"column:id;primary_key;AUTO_INCREMENT;NOT NULL"`
 	Name        string    `gorm:"column:name;default:NULL;comment:'选项名称'"`
@@ -39,6 +58,29 @@ type VoteOpt struct {
 
 func (v *VoteOpt) TableName() string {
 	return "vote_opt"
+}
+
+// GetVoteOptsByVoteId 根据投票 ID 查询选项
+func GetVoteOptsByVoteId(voteId int64) ([]VoteOpt, error) {
+	voteOpts := make([]VoteOpt, 0)
+	tx := Conn.Table("vote_opt").Where("vote_id = ?", voteId).Find(&voteOpts)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+
+	return voteOpts, nil
+}
+
+// UpdateVoteCount 更新 VoteOpt 表计数器
+func UpdateVoteCount(id int64, voteId int64) error {
+	tx := Conn.Table("vote_opt").
+		Where("id = ? AND vote_id = ?", id, voteId).
+		Update("count", gorm.Expr("count + ?", 1))
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	return nil
 }
 
 type VoteOptUser struct {
