@@ -1,5 +1,5 @@
 ---
-title: 1. 使用 Gin 搭建一个 WebServer
+title: 01. 使用 Gin 搭建一个 WebServer
 ---
 
 1.  初始化项目

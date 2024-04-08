@@ -1,5 +1,5 @@
 ---
-title: 2. 使用 go template 实现一个登录页面
+title: 02. 使用 go template 实现一个登录页面
 ---
 
 

@@ -1,5 +1,5 @@
 ---
-title: 4. 使用 GORM 连接 MySQL
+title: 04. 使用 GORM 连接 MySQL
 ---
 
 ## 1. 使用 docker-compose 创建 MySQL 实例
